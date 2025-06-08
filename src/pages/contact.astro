@@ -56,7 +56,9 @@ if (Astro.request.method === 'POST') {
 			text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
 		})
 
-		console.log(info)
+		if (info.rejectedErrors?.length) {
+			throw new Error('Mail rejected')
+		}
 
 		status = 'success'
 	} catch (error) {

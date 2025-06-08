@@ -77,8 +77,6 @@ type Props = {
 
 const { content_blocks } = Astro.props
 
-console.log(JSON.stringify(content_blocks))
-
 const html = content_blocks ? parser.parse(content_blocks) : ''
 ---
 
