@@ -10,6 +10,7 @@ const { PUBLIC_SITE_URL } = loadEnv(process.env.NODE_ENV || '', process.cwd(), '
 export default defineConfig({
 	adapter: vercel(),
 	site: PUBLIC_SITE_URL,
+	trailingSlash: 'never',
 	integrations: [sitemap()],
 	vite: {
 		plugins: [tailwindcss()],
