@@ -1,0 +1,148 @@
+---
+export const prerender = false
+
+import nodemailer from 'nodemailer'
+import Layout from '../layouts/Layout.astro'
+import Section from '../components/Section.astro'
+import ButtonLink from '../components/ButtonLink.astro'
+
+const turnstileURL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
+
+let status: 'error' | 'success' | 'idle' = 'idle'
+
+if (Astro.request.method === 'POST') {
+	try {
+		const data = await Astro.request.formData()
+
+		const turnstile_token = data.get('cf-turnstile-response')
+		if (!turnstile_token) {
+			throw new Error('No cf-turnstile-response found')
+		}
+
+		if (!import.meta.env.TURNSTILE_SECRET_TOKEN) {
+			throw new Error('TURNSTILE_SECRET_TOKEN not found')
+		}
+
+		const formData = new FormData()
+		formData.append('secret', import.meta.env.TURNSTILE_SECRET_TOKEN)
+		formData.append('response', turnstile_token)
+
+		const result = await fetch(turnstileURL, {
+			body: formData,
+			method: 'POST',
+		})
+
+		const outcome = await result.json()
+
+		if (!outcome.success) {
+			throw new Error('An error occurred while verifying you with Turnstile. Are you a human?')
+		}
+
+		const name = data.get('name')?.toString()
+		const email = data.get('email')?.toString()
+		const message = data.get('message')?.toString()
+
+		if (!name || !email || !message) {
+			throw new Error('Please fill out all fields.')
+		}
+
+		const transporter = nodemailer.createTransport(import.meta.env.NODEMAILER_CONNECTION)
+
+		const info = await transporter.sendMail({
+			from: 'hello@madebyfabian.com',
+			to: 'hello@madebyfabian.com',
+			subject: 'New contact form submission!',
+			replyTo: email,
+			text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
+		})
+
+		console.log(info)
+
+		status = 'success'
+	} catch (error) {
+		status = 'error'
+		if (error instanceof Error) {
+			console.error(error.message)
+		}
+	}
+}
+---
+
+<Layout title='Contact'>
+	<Fragment slot='head'>
+		<script src='https://challenges.cloudflare.com/turnstile/v0/api.js' async defer is:inline></script>
+	</Fragment>
+
+	<Section>
+		<div class='flex flex-col gap-10'>
+			<div>
+				<h1 transition:name='h1-secondary'>Get in touch</h1>
+				<p class='text-xl text-balance'>
+					Are you interested to learn more about my work? Do you have a question, or maybe just want to reach out? I am
+					always happy to hear from you!
+				</p>
+			</div>
+
+			{
+				status === 'success' ? (
+					<div class='px-6 py-8 rounded-3xl bg-secondary border shadow-primary text-center'>
+						<h2>Thank you!</h2>
+						<p>I will get back to you as soon as possible.</p>
+					</div>
+				) : (
+					<form method='POST' class='max-w-3xl'>
+						<div class='flex gap-6 flex-col'>
+							<div class='flex flex-col md:flex-row gap-6'>
+								<input type='text' placeholder='Name' name='name' required />
+								<input type='email' placeholder='Email' name='email' required />
+							</div>
+
+							<textarea placeholder='Message' name='message' required='' rows='5' required />
+						</div>
+
+						<div class='flex justify-between flex-wrap gap-8 mt-12 items-start'>
+							<div class='order-2 md:order-1 relative h-[65px] w-[302px] border rounded-2xl shadow-primary-small overflow-hidden'>
+								<div class='absolute inset-0 size-full z-10 bg-secondary mix-blend-multiply opacity-100 pointer-events-none' />
+								<div class='cf-turnstile' data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY} />
+							</div>
+
+							<div class='order-1 md:order-2 w-full md:w-[33%]'>
+								<ButtonLink type='button'> Send </ButtonLink>
+							</div>
+						</div>
+
+						{status === 'error' ? (
+							<div class='mt-8 text-red-700 font-bold'>An error occurred. Please try again.</div>
+						) : null}
+					</form>
+				)
+			}
+		</div>
+	</Section>
+</Layout>
+
+<style scoped>
+	input,
+	textarea {
+		width: 100%;
+		padding: calc(var(--spacing) * 3) calc(var(--spacing) * 4);
+		border-radius: var(--radius-2xl);
+		border: 1px solid var(--color-primary);
+		background-color: var(--color-secondary);
+		box-shadow: var(--shadow-primary-small);
+		font-size: var(--text-base);
+		outline-offset: 4px;
+		transition: box-shadow, transform;
+		transition-duration: var(--default-transition-duration);
+		transition-timing-function: var(--default-transition-timing-function);
+	}
+
+	:is(input, textarea):focus {
+		outline: none;
+	}
+
+	:is(input, textarea):focus-visible {
+		transform: translate(calc(var(--spacing) * -0.5), calc(var(--spacing) * -0.5));
+		box-shadow: var(--shadow-primary-small-input-active);
+	}
+</style>

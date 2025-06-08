@@ -1,0 +1,30 @@
+---
+import Article from '../components/articles/Article.astro'
+import Section from '../components/Section.astro'
+import Layout from '../layouts/Layout.astro'
+import { fetchPages, fetchSinglePage } from '../lib/directus'
+
+export async function getStaticPaths() {
+	const pages = await fetchPages({ limit: 500 })
+
+	return pages.map(page => ({
+		params: { slug: page.slug },
+	}))
+}
+
+const { slug } = Astro.params
+
+const page = await fetchSinglePage({ slug })
+---
+
+<Layout title={page.title}>
+	<Section noRightPadding noOverflowHidden>
+		<Article
+			title={page.title}
+			slug={page.slug}
+			date_created={page.date_created}
+			date_updated={page.date_updated}
+			content_blocks={page.content_blocks}
+		/>
+	</Section>
+</Layout>

@@ -1,0 +1,19 @@
+{
+	"rewrites": [
+		{
+			"source": "/content-assets/:path*",
+			"destination": "https://content.madebyfabian.com/assets/:path*"
+		}
+	],
+	"headers": [
+		{
+			"source": "/content-assets/:path*",
+			"headers": [
+				{
+					"key": "Cache-Control",
+					"value": "public, max-age=2592000"
+				}
+			]
+		}
+	]
+}

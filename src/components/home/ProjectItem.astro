@@ -1,0 +1,83 @@
+---
+import { Image } from 'astro:assets'
+import { generateAssetUrl, type FetchProjectsResult } from '../../lib/directus'
+import IconArrow from '../IconArrow.astro'
+
+type Props = {
+	project: FetchProjectsResult[number]
+}
+const { project } = Astro.props
+
+const logo = project.logo as Exclude<FetchProjectsResult[number]['logo'], string>
+const image = project.image as Exclude<FetchProjectsResult[number]['image'], string>
+
+const logoFilename = generateAssetUrl(logo)
+const imageFilename = generateAssetUrl(image, { width: 800 })
+
+const urlFormatted = (function () {
+	if (!project.url) return null
+	try {
+		const url = new URL(project.url)
+		return url.hostname.replace('www.', '')
+	} catch (error) {
+		return project.url
+	}
+})()
+---
+
+<div class='flex flex-col gap-x-8 gap-y-4 lg:flex-row pb-8 lg:pb-16 last:pb-0'>
+	<div>
+		{
+			logoFilename ? (
+				<Image
+					src={logoFilename}
+					alt={project.title}
+					width={logo?.width ?? 224}
+					height={logo?.height ?? 32}
+					class='w-56 h-8 object-contain object-left mb-6'
+				/>
+			) : null
+		}
+
+		<h3 class='text-pretty mb-4'>{project.title}</h3>
+
+		<p class='text-balance text-lg'>{project.description}</p>
+
+		{
+			project.tags || project.url ? (
+				<ul class='mt-6 flex items-center flex-wrap gap-2'>
+					{project.url ? (
+						<li class='h-7 px-3 rounded-full shadow-primary-small bg-secondary border'>
+							<a href={project.url} rel='noopener noreferrer' class='group whitespace-nowrap flex items-center gap-2'>
+								<div class='scale-75 -rotate-45 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-active:translate-x-1 group-active:-translate-y-1'>
+									<IconArrow />
+								</div>
+								{urlFormatted}
+							</a>
+						</li>
+					) : null}
+
+					{project.tags?.map(tag => (
+						<li class='h-7 px-3 rounded-full shadow-primary-small bg-secondary border'>{tag}</li>
+					))}
+				</ul>
+			) : null
+		}
+	</div>
+
+	{
+		imageFilename ? (
+			<div class='shrink-0'>
+				<div class='rounded-3xl border shadow-primary'>
+					<Image
+						src={imageFilename}
+						alt={`Screenshot of ${project.title}`}
+						class='block rounded-3xl border-4 border-secondary w-96 h-64 shrink-0 object-cover'
+						width={image?.width ?? 600}
+						height={image?.height ?? 400}
+					/>
+				</div>
+			</div>
+		) : null
+	}
+</div>

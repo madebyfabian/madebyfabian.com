@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import Section from '../../components/Section.astro'
+import { fetchArticles } from '../../lib/directus'
+import ArticleItem from '../../components/home/ArticleItem.astro'
+import ArticleList from '../../components/home/ArticleList.astro'
+
+const articles = await fetchArticles({ limit: 500 })
+---
+
+<Layout title='Blog'>
+	<Section>
+		<div class='flex flex-col gap-10'>
+			<div>
+				<h1 transition:name='h1-secondary'><span class='font-semibold'>Blog</span> & Guides</h1>
+				<p class='text-xl'>Everything I think about, want to discuss — or just want to share.</p>
+			</div>
+			<ArticleList>
+				{articles.map(article => <ArticleItem position='blog-index' article={article} />)}
+			</ArticleList>
+		</div>
+	</Section>
+</Layout>

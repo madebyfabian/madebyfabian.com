@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets'
+import { type FetchSingleArticleResult } from '../../lib/directus'
+import RichtextRenderer from '../../components/RichtextRenderer.astro'
+import portraitFinalImg from '../../assets/portrait-final.jpg'
+import { formatDate, stringToHtmlId } from '../../utils/formatDate'
+
+type Props = {
+	title: string
+	slug: string
+	date_created: string | null | undefined
+	date_updated: string | null | undefined
+	content_blocks: FetchSingleArticleResult['content_blocks']
+}
+
+const { title, slug, date_created, date_updated, content_blocks } = Astro.props
+
+const buildTableOfContents = (content_blocks: any | undefined | null) => {
+	const blocks = (content_blocks && 'blocks' in content_blocks ? content_blocks.blocks : []) as {
+		type: string
+		data?: Record<string, any>[]
+	}[]
+	if (blocks.length === 0) return null
+
+	const headerBlocks = blocks.filter(block => {
+		return block?.type === 'header' && block.data && 'level' in block.data && block.data?.level === 2
+	})
+
+	return headerBlocks.map(block => {
+		const text = block.data && 'text' in block.data ? (block.data.text as string) : ''
+
+		return {
+			text,
+			id: stringToHtmlId(text),
+		}
+	})
+}
+const tableOfContents = buildTableOfContents(content_blocks)
+---
+
+<article>
+	<h1 class='text-pretty' transition:name={`title-${slug}`}>{title}</h1>
+
+	{/* Author & Dates */}
+	<div class='mb-11 flex flex-col lg:flex-row items-start lg:items-center gap-x-6 gap-y-4'>
+		<div class='rounded-2xl border shadow-primary-small flex items-center gap-1.5 bg-secondary pr-3'>
+			<Image
+				src={portraitFinalImg}
+				alt='Portrait of Fabian'
+				class='block rounded-2xl rounded-r-xl border-4 border-secondary size-10 shrink-0 object-cover'
+				width='100'
+				height='100'
+				loading='eager'
+			/>
+
+			<p class='text-lg'>Fabian Beer</p>
+		</div>
+
+		<p class='text-lg text-balance'>
+			Published
+			<time datetime={date_created?.split('T')[0]}>
+				{formatDate(date_created)}
+			</time>
+			&mdash; Last updated
+			<time datetime={date_updated?.split('T')[0]}>
+				{formatDate(date_updated)}
+			</time>
+		</p>
+	</div>
+
+	<div class='flex flex-col 2xl:flex-row items-start gap-x-16 gap-y-7'>
+		<div class='flex-1 order-2 2xl:order-1 w-full'>
+			<RichtextRenderer content_blocks={content_blocks} />
+		</div>
+
+		<aside class='order-1 2xl:order-2 w-full 2xl:w-64 shrink-0 pl-8 py-4 border-l 2xl:sticky 2xl:top-8'>
+			<p class='text-2xl font-sans mb-3'>Table of contents</p>
+			<ul class='flex flex-col gap-2'>
+				{
+					tableOfContents?.map(item => (
+						<li>
+							<a href={`#${item.id}`} class='[text-decoration-line:underline] text-lg'>
+								{item.text}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</aside>
+	</div>
+</article>

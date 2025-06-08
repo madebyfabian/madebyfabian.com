@@ -1,0 +1,40 @@
+---
+import Background from '../Background.astro'
+import HeaderNav from '../HeaderNav.astro'
+import Logo from '../Logo.astro'
+import HeaderMenuButton from './HeaderMenuButton.astro'
+
+type Props = {
+	id: string
+}
+
+const { id } = Astro.props
+---
+
+<HeaderMenuButton onclick={`window.${id}.showModal()`} variant='menu' />
+
+<dialog id={id} class='fixed inset-0 z-30 bg-secondary w-screen h-screen max-w-none max-h-none overflow-y-scroll'>
+	<Background />
+
+	<div class='relative'>
+		<header class='h-16 border-b px-6'>
+			<div class='flex justify-between h-full items-center'>
+				<Logo />
+
+				<form method='dialog'>
+					<HeaderMenuButton variant='close' />
+				</form>
+			</div>
+		</header>
+
+		<div class='px-6'>
+			<HeaderNav />
+		</div>
+	</div>
+</dialog>
+
+<style scoped>
+	dialog::backdrop {
+		background-color: transparent;
+	}
+</style>

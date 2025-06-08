@@ -1,0 +1,34 @@
+---
+import IconArrow from './IconArrow.astro'
+
+type Props = {
+	href: string
+	label: string
+	type?: 'default' | 'back' | 'external'
+}
+
+const { href, label, type = 'default' } = Astro.props
+
+const iconLeft = type === 'back' || type === 'external'
+---
+
+<a
+	href={href}
+	class='group'
+	rel={type === 'external' ? 'noreferrer noopener' : undefined}
+	class:list={[
+		'group inline-flex items-center gap-2 text-xl font-sans [text-decoration-line:underline]',
+		iconLeft && 'flex-row-reverse',
+	]}>
+	{label}
+	<div
+		class:list={[
+			'transition',
+			type === 'default' && 'opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 group-active:translate-x-1',
+			type === 'external' &&
+				'-rotate-45 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-active:translate-x-1 group-active:-translate-y-1',
+			type === 'back' && 'rotate-180 group-hover:-translate-x-0.5 group-active:-translate-x-1',
+		]}>
+		<IconArrow />
+	</div>
+</a>

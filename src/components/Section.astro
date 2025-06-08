@@ -1,0 +1,20 @@
+---
+type Props = {
+	hasBorder?: boolean
+	noRightPadding?: boolean
+	noOverflowHidden?: boolean
+	id?: string
+}
+const { hasBorder, noRightPadding, noOverflowHidden, id } = Astro.props
+---
+
+<section
+	id={id}
+	class:list={[
+		'relative px-6 py-8 lg:p-18 xl:p-24',
+		!noOverflowHidden && 'overflow-hidden',
+		hasBorder && 'border-b',
+		noRightPadding ? 'lg:!pr-0' : 'lg:pr-4 xl:pr-14',
+	]}>
+	<slot />
+</section>

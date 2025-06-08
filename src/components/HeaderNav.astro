@@ -1,0 +1,63 @@
+---
+import TextLink from './TextLink.astro'
+
+const navItemsPrimary = [
+	{
+		label: 'Home',
+		href: '/',
+	},
+	{
+		label: 'Projects',
+		href: '/#projects',
+	},
+	{
+		label: 'About me',
+		href: '/about',
+	},
+	{
+		label: 'Blog',
+		href: '/blog',
+	},
+	{
+		label: 'Contact',
+		href: '/contact',
+	},
+]
+
+const navItemsSecondary = [
+	{
+		label: 'x.com',
+		href: 'https://x.com/madebyfabian',
+	},
+	{
+		label: 'LinkedIn',
+		href: 'https://www.linkedin.com/in/fabian-beer/',
+	},
+	{
+		label: 'GitHub',
+		href: 'https://github.com/madebyfabian',
+	},
+]
+---
+
+<nav class='pt-12 flex flex-col justify-between h-full gap-12'>
+	<ul class='flex flex-col gap-6'>
+		{
+			navItemsPrimary.map(item => (
+				<li>
+					<TextLink href={item.href} label={item.label} />
+				</li>
+			))
+		}
+	</ul>
+
+	<ul class='flex flex-col gap-4'>
+		{
+			navItemsSecondary.map(item => (
+				<li>
+					<TextLink href={item.href} label={item.label} type='external' />
+				</li>
+			))
+		}
+	</ul>
+</nav>

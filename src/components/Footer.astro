@@ -1,0 +1,36 @@
+---
+import Logo from './Logo.astro'
+import Section from './Section.astro'
+import TextLink from './TextLink.astro'
+
+const footerItems = [
+	{
+		label: 'Impressum',
+		href: '/impressum',
+	},
+	{
+		label: 'Datenschutz',
+		href: '/datenschutz',
+	},
+]
+---
+
+<footer class='border-t'>
+	<Section>
+		<div class='flex items-center justify-between'>
+			<nav>
+				<ul class='flex gap-6'>
+					{
+						footerItems.map(item => (
+							<li>
+								<TextLink href={item.href} label={item.label} />
+							</li>
+						))
+					}
+				</ul>
+			</nav>
+
+			<Logo />
+		</div>
+	</Section>
+</footer>

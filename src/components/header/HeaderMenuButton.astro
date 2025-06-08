@@ -1,0 +1,30 @@
+---
+type Props = {
+	onclick?: string
+	variant: 'menu' | 'close'
+}
+
+const { onclick, variant } = Astro.props
+---
+
+<button onclick={onclick} class='size-10 bg-shade-0 flex items-center justify-center -mr-2'>
+	<span class='block size-7'>
+		<span
+			class:list={[
+				'origin-center block h-0.5 rounded-full bg-primary translate-x-0.5 w-6',
+				variant === 'menu' ? 'translate-y-[4px]' : 'translate-y-[13px] rotate-45',
+			]}></span>
+		<span
+			class:list={[
+				'origin-center block h-0.5 rounded-full bg-primary translate-x-0.5 w-6 translate-y-[9px]',
+				variant === 'menu' ? 'translate-y-[11px]' : 'opacity-0 scale-50',
+			]}></span>
+		<span
+			class:list={[
+				'origin-center block h-0.5 rounded-full bg-primary translate-x-0.5 w-6',
+				variant === 'menu' ? 'translate-y-[18px]' : 'translate-y-[9px] -rotate-45',
+			]}></span>
+	</span>
+
+	<span class='sr-only'>{variant === 'menu' ? 'Menü öffnen' : 'Menü schließen'}</span>
+</button>

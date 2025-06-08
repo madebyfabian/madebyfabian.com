@@ -1,0 +1,66 @@
+---
+import { Image } from 'astro:assets'
+import { fetchArticles, fetchSingleArticle, generateAssetUrl, type FetchSingleArticleResult } from '../../lib/directus'
+import Layout from '../../layouts/Layout.astro'
+import Section from '../../components/Section.astro'
+import TextLink from '../../components/TextLink.astro'
+import RichtextRenderer from '../../components/RichtextRenderer.astro'
+import portraitFinalImg from '../../assets/portrait-final.jpg'
+import { formatDate, stringToHtmlId } from '../../utils/formatDate'
+import Article from '../../components/articles/Article.astro'
+
+export async function getStaticPaths() {
+	const articles = await fetchArticles({ limit: 500 })
+
+	return articles.map(article => ({
+		params: { slug: article.slug },
+	}))
+}
+
+const { slug } = Astro.params
+
+const article = await fetchSingleArticle({ slug })
+
+const ogImage = article.og_image as Exclude<FetchSingleArticleResult['og_image'], string>
+const ogImageFilename = generateAssetUrl(ogImage, { width: 1200 })
+
+const datePublished = article.date_created?.split('T')[0]
+const dateModified = article.date_updated?.split('T')[0]
+
+const jsonLdSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: article.title,
+	description: article.description,
+	'author': {
+		'@type': 'Person',
+		'name': 'Fabian Beer',
+		'url': 'https://madebyfabian.com',
+	},
+	datePublished,
+	dateModified,
+}
+---
+
+<script type='application/ld+json' is:inline set:html={JSON.stringify(jsonLdSchema)} />
+
+<Layout
+	title={article.title}
+	ogImage={ogImageFilename ?? undefined}
+	ogType='article'
+	articleModifiedTime={dateModified}
+	articlePublishedTime={datePublished}>
+	<Section noRightPadding noOverflowHidden>
+		<div class='mb-9'>
+			<TextLink href='/blog' label='All articles' type='back' />
+		</div>
+
+		<Article
+			title={article.title}
+			slug={article.slug}
+			date_created={article.date_created}
+			date_updated={article.date_updated}
+			content_blocks={article.content_blocks}
+		/>
+	</Section>
+</Layout>

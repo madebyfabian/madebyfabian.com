@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+
+@theme inline {
+	--font-sans: var(--font-albert-sans);
+	--font-serif: var(--font-lora);
+
+	--color-primary: hsl(136, 66%, 11%);
+	--color-secondary: hsl(29, 71%, 93%);
+
+	--shadow-primary: 6px 6px 0 var(--color-primary);
+	--shadow-primary-small: 3px 3px 0 var(--color-primary);
+	--shadow-primary-small-input-active: 5px 5px 0 1px var(--color-primary);
+	--drop-shadow-custom-primary: 6px 6px 0 var(--color-primary);
+	--drop-shadow-custom-primary-hover: 4px 4px 0 var(--color-primary);
+	--drop-shadow-custom-primary-active: 1px 1px 0 var(--color-primary);
+}
+
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-primary);
+		outline-color: var(--color-primary);
+		text-decoration-thickness: 0.05em;
+		text-underline-offset: 0.15em !important;
+		tab-size: 2;
+	}
+
+	html {
+		font-family: var(--font-serif);
+		letter-spacing: -0.03em;
+		color: var(--color-primary);
+	}
+
+	body {
+		overflow-y: scroll;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-sans);
+		margin-bottom: calc(var(--spacing) * 5);
+		letter-spacing: -0.04em;
+	}
+
+	h1 {
+		font-size: var(--text-5xl);
+		line-height: 1.1;
+	}
+
+	h2 {
+		font-size: var(--text-4xl);
+		line-height: 1.1;
+	}
+
+	h3 {
+		font-family: var(--font-serif);
+		font-size: var(--text-3xl);
+		line-height: 1.15;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+
+	h4 {
+		font-family: var(--font-serif);
+		font-size: var(--text-2xl);
+		line-height: 1.15;
+		font-weight: 600;
+		letter-spacing: -0.03em;
+	}
+}

@@ -1,14 +1,27 @@
 {
-  "name": "madebyfabian-com-new",
-  "type": "module",
-  "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "astro": "^5.9.0"
-  }
+	"name": "madebyfabian-com-rebrand",
+	"type": "module",
+	"version": "0.0.1",
+	"scripts": {
+		"start": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"typegen:directus": "dotenv -- bash -c 'npx directus-sdk-typegen -u $PUBLIC_DIRECTUS_URL -t $DIRECTUS_ACCESS_TOKEN -o ./src/types/directus.ts'"
+	},
+	"dependencies": {
+		"@astrojs/sitemap": "^3.4.1",
+		"@astrojs/vercel": "^8.1.5",
+		"@directus/sdk": "^19.1.0",
+		"@tailwindcss/vite": "^4.1.8",
+		"astro": "^5.9.0",
+		"editorjs-html": "^4.0.5",
+		"nodemailer": "^7.0.3",
+		"tailwindcss": "^4.1.8"
+	},
+	"devDependencies": {
+		"@types/nodemailer": "^6.4.17",
+		"dotenv-cli": "^8.0.0",
+		"prettier-plugin-astro": "^0.14.1"
+	}
 }

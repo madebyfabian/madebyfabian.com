@@ -1,0 +1,47 @@
+---
+import IconArrow from './IconArrow.astro'
+
+type Props = {
+	href?: string
+	type?: 'link' | 'button'
+}
+
+const { href, type = 'link' } = Astro.props
+
+const Tag = type === 'link' ? 'a' : 'button'
+---
+
+<Tag
+	href={type === 'link' ? href : undefined}
+	type={type === 'button' ? 'submit' : undefined}
+	class:list={[
+		'group/ButtonLink [text-decoration-line:underline] w-full relative inline-flex items-center justify-center gap-2 text-lg whitespace-nowrap h-14 border bg-secondary px-8',
+		'transition',
+		'hover:translate-x-px hover:translate-y-px active:translate-x-[3px] active:translate-y-[3px]',
+		'drop-shadow-custom-primary hover:drop-shadow-custom-primary-hover active:drop-shadow-custom-primary-active',
+		type === 'button' ? 'cursor-pointer' : 'lg:w-auto',
+	]}>
+	<slot />
+	{
+		type === 'link' ? (
+			<div class='transition group-hover/ButtonLink:translate-x-0.5 group-active/ButtonLink:translate-x-1'>
+				<IconArrow />
+			</div>
+		) : null
+	}
+
+	<span class='-top-1.5 -left-1.5'></span>
+	<span class='-top-1.5 -right-1.5'></span>
+	<span class='-bottom-1.5 -left-1.5'></span>
+	<span class='-bottom-1.5 -right-1.5'></span>
+</Tag>
+
+<style scoped>
+	span {
+		position: absolute;
+		width: calc(var(--spacing) * 3);
+		height: calc(var(--spacing) * 3);
+		border: 1px solid var(--color-primary);
+		background-color: var(--color-secondary);
+	}
+</style>

@@ -1,11 +1,113 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets'
+import { fetchArticles, fetchProjects } from '../lib/directus'
+import Layout from '../layouts/Layout.astro'
+import Section from '../components/Section.astro'
+import ButtonGroup from '../components/ButtonGroup.astro'
+import ButtonLink from '../components/ButtonLink.astro'
+import ProjectItem from '../components/home/ProjectItem.astro'
+import portraitFinalImg from '../assets/portrait-final.jpg'
+import ArticleItem from '../components/home/ArticleItem.astro'
+import CodeDecoration from '../components/CodeDecoration.astro'
+import ArticleList from '../components/home/ArticleList.astro'
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = await fetchProjects()
+const articles = await fetchArticles({ limit: 3 })
 ---
 
-<Layout>
-	<Welcome />
+<Layout title='Exceptional web experiences'>
+	<Section hasBorder>
+		<CodeDecoration
+			position='right'
+			code={`<Section class={‘p-20 border-b bg-secondary’}>
+	<h1>Exceptional web experiences</h1>
+		<div class={‘h-40’} />
+		<ul>
+			<li></li>
+		</ul>`}
+		/>
+
+		<div class='flex flex-col xl:flex-row gap-16'>
+			<div class='shrink-0 relative z-10 w-fit'>
+				<div class='rounded-3xl border shadow-primary'>
+					<Image
+						src={portraitFinalImg}
+						alt='Portrait of Fabian'
+						class='block rounded-3xl border-4 border-secondary w-56 h-76 shrink-0 object-cover'
+						width='523'
+						height='523'
+						loading='eager'
+					/>
+				</div>
+			</div>
+
+			<div>
+				<div class='relative'>
+					<span aria-hidden='true' class='block absolute z0 -left-20 -top-22 opacity-10 text-[212px] font-serif'>
+						“
+					</span>
+					<h1>
+						Exceptional web experiences <span class='lg:block font-semibold'>— crafted with passion.</span>
+					</h1>
+				</div>
+				<p class='text-xl text-balance'>
+					Welcome! I’m Fabian – a multidisciplinary web engineer from Germany with 8 years of experience crafting
+					websites and apps that are thoughtfully designed, UX-focused, and built with meticulous attention to detail.
+				</p>
+				<p class='text-xl text-balance mt-5'>
+					I’m currently working as a Lead Software Engineer at<br class='hidden lg:block' /> Kryptovergleich.de – the German
+					finance platform that helps people learn, understand, compare, and make confident decisions about crypto.
+				</p>
+
+				<div class='mt-8'>
+					<ButtonGroup>
+						<ButtonLink href='/about'> More about me </ButtonLink>
+						<ButtonLink href='/contact'> Get in touch </ButtonLink>
+					</ButtonGroup>
+				</div>
+			</div>
+		</div>
+	</Section>
+
+	<Section hasBorder id='projects'>
+		<CodeDecoration
+			position='left'
+			code={`[
+	{
+		"id": 1,
+		"title": "Kryptovergleich.de",
+	}
+]`}
+		/>
+
+		<div class='flex flex-col gap-10'>
+			<h2><span class='font-semibold'>Projects</span> & Clients</h2>
+			<div class='flex flex-col gap-16 divide-y'>
+				{projects.map(project => <ProjectItem project={project} />)}
+			</div>
+		</div>
+	</Section>
+
+	<Section>
+		<CodeDecoration
+			position='right'
+			code={`
+--font-sans: var(--font-albert-sans);
+--font-serif: var(--font-lora);
+
+--color-primary: hsl(136, 66%, 11%);
+--color-secondary: hsl(29, 71%, 93%);
+			`}
+		/>
+
+		<div class='flex flex-col gap-10'>
+			<h2><span class='font-semibold'>Blog</span> & Guides</h2>
+			<ArticleList>
+				{articles.map(article => <ArticleItem position='home' article={article} />)}
+			</ArticleList>
+			<ButtonGroup>
+				<ButtonLink href='/blog'> See all articles </ButtonLink>
+			</ButtonGroup>
+		</div>
+	</Section>
 </Layout>

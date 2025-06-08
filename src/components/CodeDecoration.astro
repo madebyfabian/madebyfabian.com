@@ -1,0 +1,17 @@
+---
+type Props = {
+	code: string
+	position: 'left' | 'right'
+}
+
+const { code, position } = Astro.props
+---
+
+<pre
+	class=''
+	class:list={[
+		'w-full reset font-mono [tab-size:2] text-xl absolute mask-b-from-0% mask-b-to-100% opacity-15 pointer-events-none select-none',
+		position === 'left' && 'left-[33%] -top-[-2%]',
+		position === 'right' && 'left-[66%] -top-[-10%]',
+	]}
+	aria-hidden='true'>{code}</pre>

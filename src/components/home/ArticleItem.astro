@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets'
+import { generateAssetUrl, type FetchArticlesResult } from '../../lib/directus'
+import { formatDate } from '../../utils/formatDate'
+
+type Props = {
+	article: FetchArticlesResult[number]
+	position: 'home' | 'blog-index'
+}
+const { article, position } = Astro.props
+
+const image = article.og_image as Exclude<FetchArticlesResult[number]['og_image'], string>
+
+const imageFilename = generateAssetUrl(image, { width: 800 })
+---
+
+<a
+	href={`/blog/${article.slug}`}
+	title={article.title}
+	class:list={[
+		'rounded-3xl border border-primary bg-secondary flex flex-col xl:flex-row',
+		'transition',
+		'hover:translate-x-px hover:translate-y-px active:translate-x-[3px] active:translate-y-[3px]',
+		'drop-shadow-custom-primary hover:drop-shadow-custom-primary-hover active:drop-shadow-custom-primary-active',
+	]}>
+	{
+		imageFilename ? (
+			<div class='shrink-0'>
+				<Image
+					src={imageFilename}
+					alt={article.title}
+					class='block rounded-3xl xl:rounded-r-xl border-4 border-secondary w-full xl:w-80 h-full shrink-0 object-cover'
+					width={image?.width ?? 600}
+					height={image?.height ?? 400}
+				/>
+			</div>
+		) : null
+	}
+	<div class='p-7 flex-1'>
+		<h3 class='text-pretty mb-4' transition:name={position === 'blog-index' ? `title-${article.slug}` : undefined}>
+			{article.title}
+		</h3>
+		<p class='text-balance text-lg'>
+			<time datetime={article.date_created?.split('T')[0]}>{formatDate(article.date_created)}</time>
+			&ndash;
+			{article.description}
+		</p>
+	</div>
+</a>
