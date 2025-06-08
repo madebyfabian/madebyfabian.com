@@ -31,7 +31,7 @@ export const generateAssetUrl = (
 	}
 
 	let optionsParams = new URLSearchParams({
-		format: 'auto',
+		format: 'webp',
 	})
 
 	if (file.modified_on) {
