@@ -81,7 +81,7 @@ const articles = await fetchArticles({ limit: 3 })
 		/>
 
 		<div class='flex flex-col gap-10'>
-			<h2><span class='font-semibold'>Projects</span> & Clients</h2>
+			<h2>Projects & Clients</h2>
 			<div class='flex flex-col gap-16 divide-y'>
 				{projects.map(project => <ProjectItem project={project} />)}
 			</div>
@@ -101,7 +101,7 @@ const articles = await fetchArticles({ limit: 3 })
 		/>
 
 		<div class='flex flex-col gap-10'>
-			<h2><span class='font-semibold'>Blog</span> & Guides</h2>
+			<h2>Blog & Guides</h2>
 			<ArticleList>
 				{articles.map(article => <ArticleItem position='home' article={article} />)}
 			</ArticleList>
