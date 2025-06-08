@@ -79,9 +79,7 @@ const tableOfContents = buildTableOfContents(content_blocks)
 				{
 					tableOfContents?.map(item => (
 						<li>
-							<a href={`#${item.id}`} class='[text-decoration-line:underline] text-lg'>
-								{item.text}
-							</a>
+							<a href={`#${item.id}`} class='[text-decoration-line:underline] text-lg' set:html={item.text} />
 						</li>
 					))
 				}
