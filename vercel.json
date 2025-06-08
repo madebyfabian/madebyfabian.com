@@ -1,4 +1,5 @@
 {
+	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"rewrites": [
 		{
 			"source": "/content-assets/:path*",
@@ -10,8 +11,17 @@
 			"source": "/content-assets/:path*",
 			"headers": [
 				{
-					"key": "Cache-Control",
-					"value": "public, max-age=2592000"
+					"key": "CDN-Cache-Control",
+					"value": "max-age=2592000"
+				}
+			]
+		},
+		{
+			"source": "/_astro/:path*",
+			"headers": [
+				{
+					"key": "CDN-Cache-Control",
+					"value": "max-age=2592000"
 				}
 			]
 		}
