@@ -49,8 +49,8 @@ if (Astro.request.method === 'POST') {
 		const transporter = nodemailer.createTransport(import.meta.env.NODEMAILER_CONNECTION)
 
 		const info = await transporter.sendMail({
-			from: 'hello@madebyfabian.com',
-			to: 'hello@madebyfabian.com',
+			from: import.meta.env.NODEMAILER_FROM,
+			to: import.meta.env.NODEMAILER_FROM,
 			subject: 'New contact form submission!',
 			replyTo: email,
 			text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
