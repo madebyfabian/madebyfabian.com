@@ -6,15 +6,12 @@ import Header from '../components/Header.astro'
 import Background from '../components/Background.astro'
 import Footer from '../components/Footer.astro'
 
-// Preload noise image
+// Preload images
 import noiseImg from '../assets/noise.png'
+import backgroundImg from '../assets/background.webp'
 
-const optimizedNoiseImg = await getImage({
-	src: noiseImg,
-	width: 900,
-	height: 600,
-	format: 'webp',
-})
+const optimizedNoiseImg = await getImage({ src: noiseImg, width: 900, height: 600, format: 'webp' })
+const optimizedBackgroundImg = await getImage({ src: backgroundImg, width: 900, height: 563, format: 'webp' })
 
 type Props = {
 	title: string
@@ -45,6 +42,7 @@ const seoFullUrl = `${import.meta.env.PUBLIC_SITE_URL}${Astro.url.pathname}`
 
 		{/* Preload important images */}
 		<link rel='preload' href={optimizedNoiseImg.src} as='image' type='image/webp' />
+		<link rel='preload' href={optimizedBackgroundImg.src} as='image' type='image/webp' />
 
 		{/* SEO */}
 		<title>{seoTitle}</title>
