@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
-@theme inline {
+@theme {
+	--spacing: 0.25rem;
 	--font-sans: var(--font-albert-sans);
 	--font-serif: var(--font-lora);
 
@@ -29,9 +30,16 @@
 	}
 
 	html {
+		font-size: 14px;
 		font-family: var(--font-serif);
 		letter-spacing: -0.03em;
 		color: var(--color-primary);
+	}
+
+	@media (width >= 768px) {
+		html {
+			font-size: 16px;
+		}
 	}
 
 	body {
@@ -50,8 +58,12 @@
 	}
 
 	h1 {
-		font-size: var(--text-5xl);
+		font-size: var(--text-4xl);
 		line-height: 1.1;
+
+		@variant md {
+			font-size: var(--text-5xl);
+		}
 	}
 
 	h2 {

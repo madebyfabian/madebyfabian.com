@@ -27,13 +27,13 @@ const articles = await fetchArticles({ limit: 3 })
 		</ul>`}
 		/>
 
-		<div class='flex flex-col xl:flex-row gap-16'>
+		<div class='flex flex-col xl:flex-row gap-y-10 gap-x-16'>
 			<div class='shrink-0 relative z-10 w-fit'>
 				<div class='rounded-3xl border shadow-primary'>
 					<Image
 						src={portraitFinalImg}
 						alt='Portrait of Fabian'
-						class='block rounded-3xl border-4 border-secondary w-56 h-76 shrink-0 object-cover'
+						class='block rounded-3xl border-4 border-secondary w-56 h-56 lg:h-76 shrink-0 object-cover'
 						width='523'
 						height='523'
 						loading='eager'
@@ -47,7 +47,7 @@ const articles = await fetchArticles({ limit: 3 })
 						“
 					</span>
 					<h1>
-						Exceptional web experiences <span class='lg:block font-semibold'>— crafted with passion.</span>
+						Exceptional web experiences <span class='block font-semibold'>— crafted with passion.</span>
 					</h1>
 				</div>
 				<p class='text-xl text-balance'>
@@ -79,12 +79,10 @@ const articles = await fetchArticles({ limit: 3 })
 	}
 ]`}
 		/>
+		<h2 slot='headline'>Projects & Clients</h2>
 
-		<div class='flex flex-col gap-10'>
-			<h2>Projects & Clients</h2>
-			<div class='flex flex-col gap-16 divide-y'>
-				{projects.map(project => <ProjectItem project={project} />)}
-			</div>
+		<div class='flex flex-col gap-12 lg:gap-16 divide-y'>
+			{projects.map(project => <ProjectItem project={project} />)}
 		</div>
 	</Section>
 
@@ -99,15 +97,13 @@ const articles = await fetchArticles({ limit: 3 })
 --color-secondary: hsl(29, 71%, 93%);
 			`}
 		/>
+		<h2 slot='headline'>Blog & Guides</h2>
 
-		<div class='flex flex-col gap-10'>
-			<h2>Blog & Guides</h2>
-			<ArticleList>
-				{articles.map(article => <ArticleItem position='home' article={article} />)}
-			</ArticleList>
-			<ButtonGroup>
-				<ButtonLink href='/blog'> See all articles </ButtonLink>
-			</ButtonGroup>
-		</div>
+		<ArticleList>
+			{articles.map(article => <ArticleItem position='home' article={article} />)}
+		</ArticleList>
+		<ButtonGroup>
+			<ButtonLink href='/blog'> See all articles </ButtonLink>
+		</ButtonGroup>
 	</Section>
 </Layout>

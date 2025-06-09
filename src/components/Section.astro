@@ -11,10 +11,19 @@ const { hasBorder, noRightPadding, noOverflowHidden, id } = Astro.props
 <section
 	id={id}
 	class:list={[
-		'relative px-6 py-8 lg:p-18 xl:p-24',
+		'relative px-6 py-14 lg:p-18 xl:p-24',
 		!noOverflowHidden && 'overflow-hidden',
 		hasBorder && 'border-b',
 		noRightPadding ? 'lg:!pr-0' : 'lg:pr-4 xl:pr-14',
 	]}>
-	<slot />
+	{
+		Astro.slots.has('headline') ? (
+			<div class='flex flex-col gap-8 lg:gap-10'>
+				<slot name='headline' />
+				<slot />
+			</div>
+		) : (
+			<slot />
+		)
+	}
 </section>
