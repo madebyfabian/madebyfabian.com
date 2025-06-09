@@ -5,9 +5,10 @@ type Props = {
 	href: string
 	label: string
 	type?: 'default' | 'back' | 'external'
+	onclick?: string
 }
 
-const { href, label, type = 'default' } = Astro.props
+const { href, label, type = 'default', onclick } = Astro.props
 
 const iconLeft = type === 'back' || type === 'external'
 ---
@@ -16,6 +17,7 @@ const iconLeft = type === 'back' || type === 'external'
 	href={href}
 	class='group'
 	rel={type === 'external' ? 'noreferrer noopener' : undefined}
+	onclick={onclick}
 	class:list={[
 		'group inline-flex items-center gap-2 text-xl font-sans [text-decoration-line:underline]',
 		iconLeft && 'flex-row-reverse',

@@ -28,7 +28,7 @@ const { id } = Astro.props
 		</header>
 
 		<div class='px-6'>
-			<HeaderNav />
+			<HeaderNav itemOnclick={`window.${id}.close()`} />
 		</div>
 	</div>
 </dialog>

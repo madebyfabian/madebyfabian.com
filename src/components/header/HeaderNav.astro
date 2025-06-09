@@ -1,6 +1,12 @@
 ---
 import TextLink from '../TextLink.astro'
 
+type Props = {
+	itemOnclick?: string
+}
+
+const { itemOnclick: onclick } = Astro.props
+
 const navItemsPrimary = [
 	{
 		label: 'Home',
@@ -45,7 +51,7 @@ const navItemsSecondary = [
 		{
 			navItemsPrimary.map(item => (
 				<li>
-					<TextLink href={item.href} label={item.label} />
+					<TextLink href={item.href} label={item.label} onclick={onclick} />
 				</li>
 			))
 		}
@@ -55,7 +61,7 @@ const navItemsSecondary = [
 		{
 			navItemsSecondary.map(item => (
 				<li>
-					<TextLink href={item.href} label={item.label} type='external' />
+					<TextLink href={item.href} label={item.label} type='external' onclick={onclick} />
 				</li>
 			))
 		}

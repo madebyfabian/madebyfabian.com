@@ -12,6 +12,7 @@ const { hasBorder, noRightPadding, noOverflowHidden, id } = Astro.props
 	id={id}
 	class:list={[
 		'relative px-6 py-14 lg:p-18 xl:p-24',
+		'scroll-mt-4',
 		!noOverflowHidden && 'overflow-hidden',
 		hasBorder && 'border-b',
 		noRightPadding ? 'lg:!pr-0' : 'lg:pr-4 xl:pr-14',
