@@ -1,7 +1,6 @@
 ---
 export const prerender = false
 
-import nodemailer from 'nodemailer'
 import Layout from '../layouts/Layout.astro'
 import Section from '../components/Section.astro'
 import ButtonLink from '../components/ButtonLink.astro'
@@ -12,6 +11,8 @@ let status: 'error' | 'success' | 'idle' = 'idle'
 
 if (Astro.request.method === 'POST') {
 	try {
+		const { default: nodemailer } = await import('nodemailer')
+
 		const data = await Astro.request.formData()
 
 		const turnstile_token = data.get('cf-turnstile-response')
