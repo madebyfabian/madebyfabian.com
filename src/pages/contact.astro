@@ -1,74 +1,7 @@
 ---
-export const prerender = false
-
 import Layout from '../layouts/Layout.astro'
 import Section from '../components/Section.astro'
 import ButtonLink from '../components/ButtonLink.astro'
-
-const turnstileURL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
-
-let status: 'error' | 'success' | 'idle' = 'idle'
-
-if (Astro.request.method === 'POST') {
-	try {
-		const { default: nodemailer } = await import('nodemailer')
-
-		const data = await Astro.request.formData()
-
-		const turnstile_token = data.get('cf-turnstile-response')
-		if (!turnstile_token) {
-			throw new Error('No cf-turnstile-response found')
-		}
-
-		if (!import.meta.env.TURNSTILE_SECRET_TOKEN) {
-			throw new Error('TURNSTILE_SECRET_TOKEN not found')
-		}
-
-		const formData = new FormData()
-		formData.append('secret', import.meta.env.TURNSTILE_SECRET_TOKEN)
-		formData.append('response', turnstile_token)
-
-		const result = await fetch(turnstileURL, {
-			body: formData,
-			method: 'POST',
-		})
-
-		const outcome = await result.json()
-
-		if (!outcome.success) {
-			throw new Error('An error occurred while verifying you with Turnstile. Are you a human?')
-		}
-
-		const name = data.get('name')?.toString()
-		const email = data.get('email')?.toString()
-		const message = data.get('message')?.toString()
-
-		if (!name || !email || !message) {
-			throw new Error('Please fill out all fields.')
-		}
-
-		const transporter = nodemailer.createTransport(import.meta.env.NODEMAILER_CONNECTION)
-
-		const info = await transporter.sendMail({
-			from: import.meta.env.NODEMAILER_FROM,
-			to: import.meta.env.NODEMAILER_FROM,
-			subject: 'New contact form submission!',
-			replyTo: email,
-			text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
-		})
-
-		if (info.rejectedErrors?.length) {
-			throw new Error('Mail rejected')
-		}
-
-		status = 'success'
-	} catch (error) {
-		status = 'error'
-		if (error instanceof Error) {
-			console.error(error.message)
-		}
-	}
-}
 ---
 
 <Layout title='Contact'>
@@ -85,42 +18,65 @@ if (Astro.request.method === 'POST') {
 			</p>
 		</div>
 
-		{
-			status === 'success' ? (
-				<div class='px-6 py-8 rounded-3xl bg-secondary border shadow-primary text-center'>
-					<h2>Thank you!</h2>
-					<p>I will get back to you as soon as possible.</p>
+		<form id='contact-form'>
+			<div class='flex gap-4 lg:gap-6 flex-col'>
+				<div class='flex flex-col md:flex-row gap-4 lg:gap-6'>
+					<input type='text' placeholder='Name' name='name' required value='Test' />
+					<input type='email' placeholder='Email' name='email' required value='test@test.de' />
 				</div>
-			) : (
-				<form method='POST' class='max-w-3xl'>
-					<div class='flex gap-4 lg:gap-6 flex-col'>
-						<div class='flex flex-col md:flex-row gap-4 lg:gap-6'>
-							<input type='text' placeholder='Name' name='name' required />
-							<input type='email' placeholder='Email' name='email' required />
-						</div>
 
-						<textarea placeholder='Message' name='message' required='' rows='5' required />
+				<textarea placeholder='Message' name='message' required='' rows='5' required> Test </textarea>
+			</div>
+
+			<div class='flex flex-wrap gap-6 lg:gap-8 mt-8 lg:mt-12 items-start justify-center md:justify-between'>
+				<div
+					class='order-2 md:order-1 relative h-[65px] w-[302px] border rounded-2xl shadow-primary-small overflow-hidden'>
+					<div class='absolute inset-0 size-full z-10 bg-secondary mix-blend-multiply opacity-100 pointer-events-none'>
 					</div>
+					<div class='cf-turnstile' data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}></div>
+				</div>
 
-					<div class='flex flex-wrap gap-6 lg:gap-8 mt-8 lg:mt-12 items-start justify-center md:justify-between'>
-						<div class='order-2 md:order-1 relative h-[65px] w-[302px] border rounded-2xl shadow-primary-small overflow-hidden'>
-							<div class='absolute inset-0 size-full z-10 bg-secondary mix-blend-multiply opacity-100 pointer-events-none' />
-							<div class='cf-turnstile' data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY} />
-						</div>
+				<div class='order-1 md:order-2 w-full md:w-[33%]'>
+					<ButtonLink type='button'> Send </ButtonLink>
+				</div>
+			</div>
+		</form>
 
-						<div class='order-1 md:order-2 w-full md:w-[33%]'>
-							<ButtonLink type='button'> Send </ButtonLink>
-						</div>
-					</div>
-
-					{status === 'error' ? (
-						<div class='mt-8 text-red-700 font-bold'>An error occurred. Please try again.</div>
-					) : null}
-				</form>
-			)
-		}
+		<div id='success-message' class='hidden px-6 py-8 rounded-3xl bg-secondary border shadow-primary text-center'>
+			<h2>Thank you!</h2>
+			<p>I will get back to you as soon as possible.</p>
+		</div>
 	</Section>
 </Layout>
+
+<script>
+	import { actions, isInputError } from 'astro:actions'
+
+	const successMessageEl = document.getElementById('success-message')
+	const contactFormEl = document.getElementById('contact-form') as HTMLFormElement | undefined
+
+	contactFormEl?.addEventListener('submit', async event => {
+		event.preventDefault()
+
+		if (!event.target) {
+			return
+		}
+
+		const formData = new FormData(contactFormEl)
+
+		const { error } = await actions.submitContactForm(formData)
+		if (error) {
+			console.error(error)
+			if (isInputError(error)) {
+				alert('Please fill out all fields and wait for the captcha to be solved.')
+			}
+			return
+		}
+
+		successMessageEl?.classList.remove('hidden')
+		contactFormEl?.classList.add('hidden')
+	})
+</script>
 
 <style scoped>
 	input,
