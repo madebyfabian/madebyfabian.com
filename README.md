@@ -4,14 +4,13 @@ My Portfolio – built with Astro (v6) and self hosted Directus
 
 ## Tech Stack
 
-Hosted on Vercel:
-
-- Astro v6
+- 🚀 Astro v6
+- 🎨 Tailwind CSS v4
 
 Self-Hosted on VPS with Coolify:
 
-- Directus v12
-- Plausible Analytics
+- 🦌 Directus v11
+- 🅿️ Plausible Analytics
 
 ## Setup
 
