@@ -11,7 +11,16 @@ export default defineConfig({
 	adapter: vercel(),
 	site: PUBLIC_SITE_URL,
 	trailingSlash: 'never',
-	integrations: [sitemap()],
+	integrations: [
+		sitemap({
+			filter: page => {
+				if (page.endsWith('/impressum') || page.endsWith('/datenschutz')) {
+					return false
+				}
+				return true
+			},
+		}),
+	],
 	vite: {
 		plugins: [tailwindcss()],
 	},
