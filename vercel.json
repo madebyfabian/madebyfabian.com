@@ -6,6 +6,10 @@
 			"destination": "https://analytics.madebyfabian.com/js/script.js"
 		},
 		{
+			"source": "/api/event",
+			"destination": "https://analytics.madebyfabian.com/api/event"
+		},
+		{
 			"source": "/content-assets/:path*",
 			"destination": "https://content.madebyfabian.com/assets/:path*"
 		}
