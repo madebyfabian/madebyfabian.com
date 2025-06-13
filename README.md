@@ -14,6 +14,6 @@ Self-Hosted on VPS with Coolify:
 
 ## Setup
 
-1. Add env variables, see `.env.example`
-2. Run `pnpm typegen:directus` to generate the directus types
-3. Replace the urls in `vercel.json` with your own
+1. Create a `.env` file and add all env variables, see `.env.example` for a full list
+2. Run `pnpm typegen:directus` to generate the Directus types for your directus instance.
+3. Replace the urls in `vercel.json` with your own Directus and Plausible instances.
