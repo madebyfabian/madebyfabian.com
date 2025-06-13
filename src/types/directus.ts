@@ -24,6 +24,7 @@ export interface Page {
 	title: string;
 	/** @required */
 	content_blocks: 'json';
+	set_no_index?: boolean | null;
 }
 
 export interface Project {

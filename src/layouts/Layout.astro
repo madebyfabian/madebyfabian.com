@@ -20,9 +20,10 @@ type Props = {
 	ogType?: 'website' | 'article'
 	articlePublishedTime?: string
 	articleModifiedTime?: string
+	noIndex?: boolean
 }
 
-const { title, ogImage, ogType = 'website', articleModifiedTime, articlePublishedTime } = Astro.props
+const { title, ogImage, ogType = 'website', articleModifiedTime, articlePublishedTime, noIndex } = Astro.props
 
 const isDev = import.meta.env.MODE === 'development'
 
@@ -39,6 +40,7 @@ const seoFullUrl = `${import.meta.env.PUBLIC_SITE_URL}${Astro.url.pathname}`
 	<head>
 		<meta charset='UTF-8' />
 		<meta name='viewport' content='width=device-width' />
+		{noIndex ? <meta name='robots' content='noindex' /> : null}
 
 		{/* Preload important images */}
 		<link rel='preload' href={optimizedNoiseImg.src} as='image' type='image/webp' />

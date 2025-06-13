@@ -121,7 +121,7 @@ export const fetchPages = async ({ limit }: { limit: number }) => {
 		readItems('Pages', {
 			limit,
 			filter: { status: { _eq: 'published' } },
-			fields: ['title', 'slug', 'date_created', 'date_updated'],
+			fields: ['title', 'slug', 'date_created', 'date_updated', 'set_no_index'],
 		})
 	)
 
@@ -132,7 +132,7 @@ export const fetchSinglePage = async ({ slug }: { slug: string }) => {
 	const page = await directus.request(
 		readItem('Pages', slug, {
 			filter: { status: { _eq: 'published' } },
-			fields: ['title', 'slug', 'date_created', 'date_updated', 'content_blocks'],
+			fields: ['title', 'slug', 'date_created', 'date_updated', 'set_no_index', 'content_blocks'],
 		})
 	)
 	return page

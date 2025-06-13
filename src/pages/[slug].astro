@@ -17,7 +17,7 @@ const { slug } = Astro.params
 const page = await fetchSinglePage({ slug })
 ---
 
-<Layout title={page.title}>
+<Layout title={page.title} noIndex={page.set_no_index === true}>
 	<Section noRightPadding noOverflowHidden>
 		<Article
 			title={page.title}
