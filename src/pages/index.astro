@@ -61,7 +61,7 @@ const articles = await fetchArticles({ limit: 3 })
 
 				<div class='mt-8'>
 					<ButtonGroup>
-						<ButtonLink href='/about'> More about me </ButtonLink>
+						<ButtonLink href='/#work'> My work </ButtonLink>
 						<ButtonLink href='/contact'> Get in touch </ButtonLink>
 					</ButtonGroup>
 				</div>
@@ -69,7 +69,7 @@ const articles = await fetchArticles({ limit: 3 })
 		</div>
 	</Section>
 
-	<Section hasBorder id='projects'>
+	<Section hasBorder id='work'>
 		<CodeDecoration
 			position='left'
 			code={`[
@@ -79,7 +79,7 @@ const articles = await fetchArticles({ limit: 3 })
 	}
 ]`}
 		/>
-		<h2 slot='headline'>Projects & Clients</h2>
+		<h2 slot='headline'>My work</h2>
 
 		<div class='flex flex-col gap-12 lg:gap-16 divide-y'>
 			{projects.map(project => <ProjectItem project={project} />)}
@@ -97,7 +97,7 @@ const articles = await fetchArticles({ limit: 3 })
 --color-secondary: hsl(29, 71%, 93%);
 			`}
 		/>
-		<h2 slot='headline'>Blog & Guides</h2>
+		<h2 slot='headline'>Blog articles</h2>
 
 		<ArticleList>
 			{articles.map(article => <ArticleItem position='home' article={article} />)}

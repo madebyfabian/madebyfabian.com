@@ -11,8 +11,11 @@ const articles = await fetchArticles({ limit: 500 })
 <Layout title='Blog'>
 	<Section>
 		<div slot='headline'>
-			<h1>Blog & Guides</h1>
-			<p class='text-xl'>Everything I think about, want to discuss — or just want to share.</p>
+			<h1>Blog articles</h1>
+			<p class='text-xl text-balance'>
+				Here I share some guides and tips about web development, design, and more.<br />Let me know what you want read
+				about!
+			</p>
 		</div>
 
 		<ArticleList>
