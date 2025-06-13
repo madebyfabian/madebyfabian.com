@@ -19,7 +19,7 @@ const imageFilename = generateAssetUrl(image, { width: 800 })
 	title={article.title}
 	class:list={[
 		'rounded-3xl border border-primary bg-secondary flex flex-col xl:flex-row',
-		'transition',
+		'transition transform-gpu',
 		'hover:translate-x-px hover:translate-y-px active:translate-x-[3px] active:translate-y-[3px]',
 		'drop-shadow-custom-primary hover:drop-shadow-custom-primary-hover active:drop-shadow-custom-primary-active',
 	]}>

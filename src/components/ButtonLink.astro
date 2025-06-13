@@ -16,7 +16,7 @@ const Tag = type === 'link' ? 'a' : 'button'
 	type={type === 'button' ? 'submit' : undefined}
 	class:list={[
 		'group/ButtonLink [text-decoration-line:underline] w-full relative inline-flex items-center justify-center gap-2 text-lg whitespace-nowrap h-14 border bg-secondary px-8',
-		'transition',
+		'transition transform-gpu',
 		'hover:translate-x-px hover:translate-y-px active:translate-x-[3px] active:translate-y-[3px]',
 		'drop-shadow-custom-primary hover:drop-shadow-custom-primary-hover active:drop-shadow-custom-primary-active',
 		type === 'button' ? 'cursor-pointer' : 'lg:w-auto',
