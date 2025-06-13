@@ -72,11 +72,11 @@ const seoFullUrl = `${import.meta.env.PUBLIC_SITE_URL}${Astro.url.pathname}`
 		<ClientRouter fallback='swap' />
 
 		{/* Plausible Analytics */}
-		<script
-			is:inline
-			defer
-			data-domain='madebyfabian.com'
-			src={`${import.meta.env.PUBLIC_PLAUSIBLE_API_HOST}/js/script.js`}></script>
+		{
+			import.meta.env.NODE_ENV === 'production' ? (
+				<script is:inline defer data-domain='madebyfabian.com' src={`/pl.js`} />
+			) : null
+		}
 
 		<slot name='head' />
 	</head>

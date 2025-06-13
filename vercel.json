@@ -2,6 +2,10 @@
 	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"rewrites": [
 		{
+			"source": "/pl.js",
+			"destination": "https://analytics.madebyfabian.com/js/script.js"
+		},
+		{
 			"source": "/content-assets/:path*",
 			"destination": "https://content.madebyfabian.com/assets/:path*"
 		}
