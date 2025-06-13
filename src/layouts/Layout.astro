@@ -76,6 +76,7 @@ const seoFullUrl = `${import.meta.env.PUBLIC_SITE_URL}${Astro.url.pathname}`
 		{/* Plausible Analytics */}
 		{
 			import.meta.env.NODE_ENV === 'production' ? (
+				// This is using a proxy url, see `vercel.json` for the config.
 				<script is:inline defer data-domain='madebyfabian.com' src={`/pl.js`} />
 			) : null
 		}

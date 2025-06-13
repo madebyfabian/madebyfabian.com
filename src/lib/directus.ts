@@ -3,9 +3,6 @@ import type { Schema } from '../types/directus'
 
 const directus = createDirectus<Schema>(import.meta.env.PUBLIC_DIRECTUS_URL).with(rest())
 
-/**
- * Todo add proxy due to robots.txt indexing issue.
- */
 export const generateAssetUrl = (
 	file:
 		| {
@@ -20,7 +17,7 @@ export const generateAssetUrl = (
 	if (!file) return null
 
 	const isDev = import.meta.env.MODE === 'development'
-	// In prod, we use the vercel rewrite defined in `vercel.json`
+	// In prod, we use the vercel rewrite proxy defined in `vercel.json`
 	const baseUrl = isDev
 		? `${import.meta.env.PUBLIC_DIRECTUS_URL}/assets`
 		: `${import.meta.env.PUBLIC_SITE_URL}/content-assets`
