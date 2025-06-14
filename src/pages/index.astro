@@ -13,9 +13,13 @@ import ArticleList from '../components/home/ArticleList.astro'
 
 const projects = await fetchProjects()
 const articles = await fetchArticles({ limit: 3 })
+
+const title = 'Exceptional web experiences — crafted with passion.'
+const description =
+	'I’m Fabian – a multidisciplinary web engineer from Germany with 8 years of experience crafting websites and apps that are thoughtfully designed, UX-focused, and built with meticulous attention to detail.'
 ---
 
-<Layout title='Exceptional web experiences'>
+<Layout title={title} description={description}>
 	<Section hasBorder>
 		<CodeDecoration
 			position='right'
@@ -51,8 +55,7 @@ const articles = await fetchArticles({ limit: 3 })
 					</h1>
 				</div>
 				<p class='text-xl text-balance'>
-					Welcome! I’m Fabian – a multidisciplinary web engineer from Germany with 8 years of experience crafting
-					websites and apps that are thoughtfully designed, UX-focused, and built with meticulous attention to detail.
+					Welcome! {description}
 				</p>
 				<p class='text-xl text-balance mt-5'>
 					I’m currently working as a Lead Software Engineer at<br class='hidden lg:block' /> Kryptovergleich.de – the German

@@ -46,6 +46,7 @@ const jsonLdSchema = {
 
 <Layout
 	title={article.title}
+	description={article.description ?? false}
 	ogImage={ogImageFilename ?? undefined}
 	ogType='article'
 	articleModifiedTime={dateModified}

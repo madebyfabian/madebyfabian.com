@@ -6,15 +6,17 @@ import ArticleItem from '../../components/home/ArticleItem.astro'
 import ArticleList from '../../components/home/ArticleList.astro'
 
 const articles = await fetchArticles({ limit: 500 })
+
+const title = 'Blog articles'
+const description = 'Here I share some guides and tips about web development, design, and more.'
 ---
 
-<Layout title='Blog'>
+<Layout title={title} description={description}>
 	<Section>
 		<div slot='headline'>
-			<h1>Blog articles</h1>
+			<h1>{title}</h1>
 			<p class='text-xl text-balance'>
-				Here I share some guides and tips about web development, design, and more.<br />Let me know what you want read
-				about!
+				{description}<br />Let me know what you want read about!
 			</p>
 		</div>
 

@@ -2,12 +2,14 @@
 import ButtonLink from '../components/ButtonLink.astro'
 import Section from '../components/Section.astro'
 import Layout from '../layouts/Layout.astro'
+
+const title = 'Error 404'
 ---
 
-<Layout title='404'>
+<Layout title={title} description={false}>
 	<Section>
 		<div class='text-center'>
-			<h1>Error 404</h1>
+			<h1>{title}</h1>
 			<p>Page not found</p>
 			<div class='mt-8'>
 				<ButtonLink href='/'>Home</ButtonLink>

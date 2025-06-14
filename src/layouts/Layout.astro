@@ -15,7 +15,8 @@ const optimizedBackgroundImg = await getImage({ src: backgroundImg, width: 900, 
 
 type Props = {
 	title: string
-	description?: string
+	/** If false, no description meta tag will be added. */
+	description: string | false
 	ogImage?: string
 	ogType?: 'website' | 'article'
 	articlePublishedTime?: string
@@ -23,14 +24,20 @@ type Props = {
 	noIndex?: boolean
 }
 
-const { title, ogImage, ogType = 'website', articleModifiedTime, articlePublishedTime, noIndex } = Astro.props
+const {
+	title,
+	description,
+	ogImage,
+	ogType = 'website',
+	articleModifiedTime,
+	articlePublishedTime,
+	noIndex,
+} = Astro.props
 
 const isDev = import.meta.env.MODE === 'development'
 
 const seoTitle = `${isDev ? '⚙️ ' : ''}${title} · Fabian Beer`
-const seoDescription =
-	Astro.props.description ??
-	'I’m Fabian – a multidisciplinary web engineer from Germany with 8 years of experience crafting websites and apps that are thoughtfully designed, UX-focused, and built with meticulous attention to detail.'
+const seoDescription = description === false ? undefined : description
 const seoOgImage = ogImage ?? `${import.meta.env.PUBLIC_SITE_URL}/og-image-default.jpg`
 const seoFullUrl = `${import.meta.env.PUBLIC_SITE_URL}${Astro.url.pathname}`
 ---
@@ -48,7 +55,7 @@ const seoFullUrl = `${import.meta.env.PUBLIC_SITE_URL}${Astro.url.pathname}`
 
 		{/* SEO */}
 		<title>{seoTitle}</title>
-		<meta name='description' content={seoDescription} />
+		{seoDescription ? <meta name='description' content={seoDescription} /> : null}
 		<meta property='og:title' content={seoTitle} />
 		<meta property='og:image' content={seoOgImage} />
 		<meta property='og:url' content={seoFullUrl} />
