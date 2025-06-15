@@ -50,8 +50,8 @@ const seoFullUrl = `${import.meta.env.PUBLIC_SITE_URL}${Astro.url.pathname}`
 		{noIndex ? <meta name='robots' content='noindex' /> : null}
 
 		{/* Preload important images */}
-		<link rel='preload' href={optimizedNoiseImg.src} as='image' type='image/webp' />
-		<link rel='preload' href={optimizedBackgroundImg.src} as='image' type='image/webp' />
+		<link rel='preload' href={optimizedNoiseImg.src} as='image' type='image/webp' fetchpriority='high' />
+		<link rel='preload' href={optimizedBackgroundImg.src} as='image' type='image/webp' fetchpriority='high' />
 
 		{/* SEO */}
 		<title>{seoTitle}</title>
